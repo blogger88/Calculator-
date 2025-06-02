@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Income Tax Calculator - India FY 2024-25</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      background: #fff;
+      padding: 20px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Income Tax Calculator<br>(FY 2024-25 | Old Regime)</h2>
+    <label for="income">Enter Annual Income (₹):</label>
+    <input type="number" id="income" placeholder="E.g. 650000" required>
+
+    <label for="age">Select Age:</label>
+    <select id="age">
+      <option value="normal">Below 60 years</option>
+      <option value="senior">60 to 80 years</option>
+      <option value="super">Above 80 years</option>
+    </select>
+
+    <button onclick="calculateTax()">Calculate Tax</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateTax() {
+      const income = parseFloat(document.getElementById("income").value);
+      const age = document.getElementById("age").value;
+      let tax = 0;
+
+      let slab1 = 250000;
+      if (age === "senior") slab1 = 300000;
+      if (age === "super") slab1 = 500000;
+
+      if (income <= slab1) {
+        tax = 0;
+      } else if (income <= 500000) {
+        tax = (income - slab1) * 0.05;
+      } else if (income <= 1000000) {
+        tax = (income - 500000) * 0.2 + 12500;
+      } else {
+        tax = (income - 1000000) * 0.3 + 112500;
+      }
+
+      // Rebate under section 87A if total income does not exceed 5 lakh
+      if (income <= 500000) {
+        tax = 0;
+      }
+
+      const result = document.getElementById("result");
+      result.innerHTML = `Estimated Tax Payable: ₹${tax.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
